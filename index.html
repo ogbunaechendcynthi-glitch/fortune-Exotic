@@ -4,28 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exotico - Visual Intelligence At Your Fingertips</title>
-    <link rel="shortcut icon" href="logo (1).ico" type="image/x-icon">
+<link rel="shortcut icon" href="logo (1).ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* Basic Reset */
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  body, html { height:100%; font-family:'Inter', sans-serif; }
+  body, html { height:100%; font-family:'Inter', sans-serif; overflow-x: hidden; }
 
-  /* Gradient background */
-  body {
-    background:  #0f0f23;   
-    background-size: 200% 200%;
-    animation: gradientShift 20s ease infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
+  /* Shapes container */
+  .shapes-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+    background: #0f0f23;
   }
 
-  @keyframes gradientShift {
-    0% { background-position:0% 50%; }
-    50% { background-position:100% 50%; }
-    100% { background-position:0% 50%; }
+  /* Shape style */
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B5CF6, #EC4899);
+    opacity: 0.7;
+    animation: drift infinite linear;
+  }
+
+  /* Floating drift animation */
+  @keyframes drift {
+    0% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 0.7; }
+    25% { transform: translate(15vw, -10vh) scale(1.2) rotate(90deg); opacity: 0.6; }
+    50% { transform: translate(-20vw, 15vh) scale(0.8) rotate(180deg); opacity: 0.8; }
+    75% { transform: translate(10vw, -15vh) scale(1.1) rotate(270deg); opacity: 0.6; }
+    100% { transform: translate(0,0) scale(1) rotate(360deg); opacity: 0.7; }
   }
 
   /* Form container */
@@ -41,12 +55,12 @@
     transition: all 0.3s ease;
     margin: auto;
   }
-.form-container:hover{
-  
-            border-color: #EC4899;
-            transform: translateY(-8px);
-            box-shadow: 0 30px 70px rgba(139, 92, 246, 0.3);
-}
+  .form-container:hover{
+    border-color: #EC4899;
+    transform: translateY(-8px);
+    box-shadow: 0 30px 70px rgba(139, 92, 246, 0.3);
+  }
+
   /* Brand */
   .brand-name {
     height: 70%;
@@ -120,9 +134,10 @@
 </head>
 <body>
 
-<div class="form-container">
-<img src="logo.png" alt="Your Site Name" style="max-width: 150px; height: auto;">
+<div class="shapes-container" id="shapes-container"></div>
 
+<div class="form-container">
+  <img src="logo.png" alt="Your Site Name" style="max-width: 150px; height: auto;">
   <p class="brand-subtitle">Unlock the Power of Visual Intelligence</p>
 
   <div class="tabs">
@@ -172,17 +187,9 @@
   const signupForm = document.getElementById('signup-form');
   const loginForm = document.getElementById('login-form');
 
-  signupTab.addEventListener('click',()=>{
-    signupTab.classList.add('active'); loginTab.classList.remove('active');
-    signupForm.style.display='flex'; loginForm.style.display='none';
-  });
+  signupTab.addEventListener('click',()=>{ signupTab.classList.add('active'); loginTab.classList.remove('active'); signupForm.style.display='flex'; loginForm.style.display='none'; });
+  loginTab.addEventListener('click',()=>{ loginTab.classList.add('active'); signupTab.classList.remove('active'); loginForm.style.display='flex'; signupForm.style.display='none'; });
 
-  loginTab.addEventListener('click',()=>{
-    loginTab.classList.add('active'); signupTab.classList.remove('active');
-    loginForm.style.display='flex'; signupForm.style.display='none';
-  });
-
-  // Simple validation and redirect
   signupForm.addEventListener('submit', e=>{
     e.preventDefault();
     let name = document.getElementById('signup-name').value.trim();
@@ -216,6 +223,23 @@
 
     if(valid) window.location.href='home.html';
   });
+
+  // Floating Shapes Script
+  const shapesContainer = document.getElementById('shapes-container');
+  const shapeCount = 30;
+
+  for(let i=0;i<shapeCount;i++){
+    const shape = document.createElement('div');
+    shape.classList.add('shape');
+    const size = Math.random()*60 + 20;
+    shape.style.width = `${size}px`;
+    shape.style.height = `${size}px`;
+    shape.style.top = `${Math.random()*100}%`;
+    shape.style.left = `${Math.random()*100}%`;
+    shape.style.animationDuration = `${Math.random()*20+10}s`;
+    shape.style.animationDelay = `${Math.random()*10}s`;
+    shapesContainer.appendChild(shape);
+  }
 </script>
 
 </body>
