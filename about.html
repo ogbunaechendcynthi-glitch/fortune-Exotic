@@ -1,0 +1,1276 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exotico - Visual Intelligence Platform</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(75, 0, 130, 0.2);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7B68EE, #b99fcb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #b99fcb;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #7B68EE;
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, #4B0082, #7B68EE);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123, 104, 238, 0.4);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #7B68EE;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 10, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-bottom: 1px solid rgba(75, 0, 130, 0.2);
+      z-index: 999;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      color: #b99fcb;
+      text-decoration: none;
+      padding: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+    }
+
+    .mobile-menu a:hover {
+      background: rgba(75, 0, 130, 0.2);
+      color: #7B68EE;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(75, 0, 130, 0.15), transparent 70%);
+      border-radius: 50%;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text h1 {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #ffffff, #b99fcb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-text p {
+      font-size: 20px;
+      color: #b99fcb;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4B0082, #7B68EE);
+      color: white;
+      padding: 18px 40px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(123, 104, 238, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #b99fcb;
+      padding: 18px 40px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 2px solid #4B0082;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(75, 0, 130, 0.1);
+      border-color: #7B68EE;
+      color: #7B68EE;
+    }
+
+    /* Demo Upload Area */
+    .demo-upload {
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.1), rgba(123, 104, 238, 0.05));
+      border: 2px dashed #4B0082;
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-upload:hover {
+      border-color: #7B68EE;
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.15), rgba(123, 104, 238, 0.1));
+      transform: translateY(-4px);
+    }
+
+    .upload-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+    }
+
+    .demo-upload h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .demo-upload p {
+      color: #b99fcb;
+      font-size: 16px;
+    }
+
+    .demo-upload input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-header h2 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff, #b99fcb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: #b99fcb;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.1), rgba(123, 104, 238, 0.05));
+      border: 1px solid rgba(75, 0, 130, 0.3);
+      border-radius: 20px;
+      padding: 48px 36px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4B0082, #7B68EE);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: #7B68EE;
+      box-shadow: 0 20px 60px rgba(123, 104, 238, 0.3);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .feature-card p {
+      color: #b99fcb;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 120px 0;
+      background: linear-gradient(180deg, transparent, rgba(75, 0, 130, 0.05), transparent);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 60px;
+      margin-top: 80px;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #4B0082, #7B68EE);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 24px rgba(123, 104, 238, 0.4);
+    }
+
+    .step h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .step p {
+      color: #b99fcb;
+      font-size: 16px;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.2), rgba(123, 104, 238, 0.1));
+      border: 2px solid #4B0082;
+      border-radius: 32px;
+      padding: 80px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(123, 104, 238, 0.1), transparent 50%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cta-box h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-box p {
+      font-size: 18px;
+      color: #b99fcb;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-box .btn-primary {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(10, 10, 10, 0.95);
+      border-top: 1px solid rgba(75, 0, 130, 0.2);
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 60px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h4 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #7B68EE;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-section ul li a {
+      color: #b99fcb;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-size: 15px;
+    }
+
+    .footer-section ul li a:hover {
+      color: #7B68EE;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(75, 0, 130, 0.2);
+      color: #b99fcb;
+      font-size: 14px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 968px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+
+      .hero-text h1 {
+        font-size: 48px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .result-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .result-image {
+        width: 100%;
+        max-width: 200px;
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-text h1 {
+        font-size: 36px;
+      }
+
+      .hero-text p {
+        font-size: 18px;
+      }
+
+      .section-header h2 {
+        font-size: 36px;
+      }
+
+      .cta-box h2 {
+        font-size: 32px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Upload Preview */
+    .upload-preview {
+      display: none;
+      margin-top: 24px;
+    }
+
+    .upload-preview.active {
+      display: block;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .preview-info {
+      color: #b99fcb;
+      font-size: 14px;
+    }
+
+    .analyzing {
+      display: inline-block;
+      margin-left: 8px;
+    }
+
+    .analyzing::after {
+      content: '...';
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .results-container {
+      display: none;
+      margin-top: 24px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.15), rgba(123, 104, 238, 0.1));
+      border-radius: 20px;
+      border: 1px solid #4B0082;
+    }
+
+    .results-container.active {
+      display: block;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(75, 0, 130, 0.3);
+    }
+
+    .result-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #7B68EE;
+    }
+
+    .result-title {
+      flex: 1;
+    }
+
+    .result-title h3 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .result-title .category {
+      display: inline-block;
+      background: linear-gradient(135deg, #4B0082, #7B68EE);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .result-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: #b99fcb;
+      font-size: 14px;
+    }
+
+    .result-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .result-description {
+      margin-bottom: 24px;
+      line-height: 1.8;
+      color: #b99fcb;
+      font-size: 16px;
+    }
+
+    .result-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .detail-item {
+      background: rgba(75, 0, 130, 0.1);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(75, 0, 130, 0.2);
+    }
+
+    .detail-item label {
+      display: block;
+      font-size: 12px;
+      color: #7B68EE;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .detail-item .value {
+      font-size: 16px;
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #4B0082, #7B68EE);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(123, 104, 238, 0.4);
+    }
+
+    .action-btn.secondary {
+      background: transparent;
+      border: 2px solid #4B0082;
+      color: #b99fcb;
+    }
+
+    .action-btn.secondary:hover {
+      background: rgba(75, 0, 130, 0.1);
+      border-color: #7B68EE;
+      color: #7B68EE;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><!-- Navigation -->
+  <nav>
+   <div class="nav-content">
+    <div class="logo" id="company-name">
+     Exotico
+    </div>
+    <div class="nav-links"><a href="#features">Features</a> <a href="#how-it-works">How It Works</a> <a href="#about">About</a> <a href="#contact" class="nav-cta">Get Started</a>
+    </div><button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+   </div>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu"><a href="#features">Features</a> <a href="#how-it-works">How It Works</a> <a href="#about">About</a> <a href="#contact">Get Started</a>
+  </div><!-- Hero Section -->
+  <section class="hero">
+   <div class="container">
+    <div class="hero-content">
+     <div class="hero-text">
+      <h1 id="hero-title">Visual Intelligence at Your Fingertips</h1>
+      <p id="hero-subtitle">Transform any image into instant insights with our advanced AI-powered visual search technology. Discover, identify, and explore the world through images.</p>
+      <div class="hero-buttons"><button class="btn-primary" id="cta-button" onclick="document.getElementById('file-input').click()">Start Searching</button> <a href="#how-it-works" class="btn-secondary">Learn More</a>
+      </div>
+     </div>
+     <div class="demo-upload" onclick="document.getElementById('file-input').click()"><input type="file" id="file-input" accept="image/*">
+      <svg class="upload-icon" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#7B68EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M17 8L12 3L7 8" stroke="#7B68EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M12 3V15" stroke="#7B68EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <h3>Try It Now</h3>
+      <p>Drop an image or click to upload</p>
+      <div class="upload-preview" id="upload-preview">
+       <div class="preview-info"><span id="preview-text">Analyzing image<span class="analyzing"></span></span>
+       </div>
+      </div>
+      <div class="results-container" id="results-container">
+       <div class="result-header"><img class="result-image" id="result-image" alt="Identified object">
+        <div class="result-title"><span class="category" id="result-category">Category</span>
+         <h3 id="result-name">Result Name</h3>
+         <div class="result-meta"><span>
+           <svg width="16" height="16" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#b99fcb" stroke-width="2" /> <path d="M12 6V12L16 14" stroke="#b99fcb" stroke-width="2" stroke-linecap="round" />
+           </svg><span id="result-year">Year</span> </span> <span>
+           <svg width="16" height="16" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="#b99fcb" stroke-width="2" /> <circle cx="12" cy="10" r="3" stroke="#b99fcb" stroke-width="2" />
+           </svg><span id="result-origin">Origin</span> </span>
+         </div>
+        </div>
+       </div>
+       <p class="result-description" id="result-description">Description will appear here</p>
+       <div class="result-details" id="result-details"></div>
+       <div class="result-actions"><a href="#" class="action-btn" id="google-search-btn" target="_blank" rel="noopener noreferrer">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="2" /> <path d="M21 21L16.65 16.65" stroke="white" stroke-width="2" stroke-linecap="round" />
+         </svg> Search on Google </a> <button class="action-btn secondary" onclick="document.getElementById('file-input').click()">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg> Try Another Image </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Features Section -->
+  <section class="features" id="features">
+   <div class="container">
+    <div class="section-header">
+     <h2>Powerful Visual Recognition</h2>
+     <p>Experience cutting-edge AI technology that understands images like never before</p>
+    </div>
+    <div class="features-grid">
+     <div class="feature-card">
+      <svg class="feature-icon" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#7B68EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <h3 id="feature-1-title">Instant Recognition</h3>
+      <p>Get results in milliseconds with our lightning-fast image processing engine powered by advanced neural networks.</p>
+     </div>
+     <div class="feature-card">
+      <svg class="feature-icon" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#7B68EE" stroke-width="2" /> <path d="M12 6V12L16 14" stroke="#7B68EE" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <h3 id="feature-2-title">Smart Analysis</h3>
+      <p>Deep learning algorithms provide detailed insights, context, and related information for every image you search.</p>
+     </div>
+     <div class="feature-card">
+      <svg class="feature-icon" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#7B68EE" stroke-width="2" /> <path d="M2 12H22" stroke="#7B68EE" stroke-width="2" /> <path d="M12 2C14.5 4.5 16 8 16 12C16 16 14.5 19.5 12 22C9.5 19.5 8 16 8 12C8 8 9.5 4.5 12 2Z" stroke="#7B68EE" stroke-width="2" />
+      </svg>
+      <h3 id="feature-3-title">Global Database</h3>
+      <p>Access billions of indexed images from around the world with multi-language support and cultural context.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+   <div class="container">
+    <div class="section-header">
+     <h2>How It Works</h2>
+     <p>Three simple steps to unlock visual intelligence</p>
+    </div>
+    <div class="steps">
+     <div class="step">
+      <div class="step-number">
+       1
+      </div>
+      <h3>Upload Image</h3>
+      <p>Take a photo or upload any image from your device</p>
+     </div>
+     <div class="step">
+      <div class="step-number">
+       2
+      </div>
+      <h3>AI Analysis</h3>
+      <p>Our AI instantly processes and identifies objects, text, and context</p>
+     </div>
+     <div class="step">
+      <div class="step-number">
+       3
+      </div>
+      <h3>Get Results</h3>
+      <p>Receive detailed information, similar images, and actionable insights</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- CTA Section -->
+  <section class="cta-section" id="contact">
+   <div class="container">
+    <div class="cta-box">
+     <h2>Ready to Transform Your Visual Search?</h2>
+     <p>Join thousands of businesses and individuals using Exotico to unlock the power of visual intelligence</p><button class="btn-primary" onclick="document.getElementById('file-input').click()">Get Started Free</button>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer>
+   <div class="container">
+    <div class="footer-content">
+     <div class="footer-section">
+      <h4>Product</h4>
+      <ul>
+       <li><a href="#features">Features</a></li>
+       <li><a href="#how-it-works">How It Works</a></li>
+       <li><a href="#pricing">Pricing</a></li>
+       <li><a href="#api">API</a></li>
+      </ul>
+     </div>
+     <div class="footer-section">
+      <h4>Company</h4>
+      <ul>
+       <li><a href="#about">About Us</a></li>
+       <li><a href="#careers">Careers</a></li>
+       <li><a href="#blog">Blog</a></li>
+       <li><a href="#press">Press</a></li>
+      </ul>
+     </div>
+     <div class="footer-section">
+      <h4>Resources</h4>
+      <ul>
+       <li><a href="#docs">Documentation</a></li>
+       <li><a href="#support">Support</a></li>
+       <li><a href="#community">Community</a></li>
+       <li><a href="#status">Status</a></li>
+      </ul>
+     </div>
+     <div class="footer-section">
+      <h4>Legal</h4>
+      <ul>
+       <li><a href="#privacy">Privacy Policy</a></li>
+       <li><a href="#terms">Terms of Service</a></li>
+       <li><a href="#security">Security</a></li>
+       <li><a href="#compliance">Compliance</a></li>
+      </ul>
+     </div>
+    </div>
+    <div class="footer-bottom">
+     <p>© 2024 Exotico. All rights reserved. Empowering visual intelligence worldwide.</p>
+    </div>
+   </div>
+  </footer>
+  <script>
+    const defaultConfig = {
+      background_color: '#0a0a0a',
+      primary_color: '#4B0082',
+      secondary_color: '#b99fcb',
+      accent_color: '#7B68EE',
+      text_color: '#ffffff',
+      font_family: 'Inter',
+      font_size: 16,
+      company_name: 'Exotico',
+      hero_title: 'Visual Intelligence at Your Fingertips',
+      hero_subtitle: 'Transform any image into instant insights with our advanced AI-powered visual search technology. Discover, identify, and explore the world through images.',
+      cta_button: 'Start Searching',
+      feature_1_title: 'Instant Recognition',
+      feature_2_title: 'Smart Analysis',
+      feature_3_title: 'Global Database'
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.background = config.background_color || defaultConfig.background_color;
+      document.body.style.color = config.text_color || defaultConfig.text_color;
+      
+      const companyNameEl = document.getElementById('company-name');
+      if (companyNameEl) companyNameEl.textContent = config.company_name || defaultConfig.company_name;
+      
+      const heroTitleEl = document.getElementById('hero-title');
+      if (heroTitleEl) {
+        heroTitleEl.textContent = config.hero_title || defaultConfig.hero_title;
+        heroTitleEl.style.fontSize = `${baseSize * 4}px`;
+      }
+      
+      const heroSubtitleEl = document.getElementById('hero-subtitle');
+      if (heroSubtitleEl) {
+        heroSubtitleEl.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+        heroSubtitleEl.style.fontSize = `${baseSize * 1.25}px`;
+      }
+      
+      const ctaButtonEl = document.getElementById('cta-button');
+      if (ctaButtonEl) {
+        ctaButtonEl.textContent = config.cta_button || defaultConfig.cta_button;
+        ctaButtonEl.style.fontSize = `${baseSize}px`;
+      }
+      
+      const feature1El = document.getElementById('feature-1-title');
+      if (feature1El) {
+        feature1El.textContent = config.feature_1_title || defaultConfig.feature_1_title;
+        feature1El.style.fontSize = `${baseSize * 1.5}px`;
+      }
+      
+      const feature2El = document.getElementById('feature-2-title');
+      if (feature2El) {
+        feature2El.textContent = config.feature_2_title || defaultConfig.feature_2_title;
+        feature2El.style.fontSize = `${baseSize * 1.5}px`;
+      }
+      
+      const feature3El = document.getElementById('feature-3-title');
+      if (feature3El) {
+        feature3El.textContent = config.feature_3_title || defaultConfig.feature_3_title;
+        feature3El.style.fontSize = `${baseSize * 1.5}px`;
+      }
+
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      
+      document.querySelectorAll('.btn-primary').forEach(btn => {
+        btn.style.background = `linear-gradient(135deg, ${primaryColor}, ${accentColor})`;
+      });
+      
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.style.color = secondaryColor;
+      });
+      
+      document.querySelectorAll('.hero-text p, .section-header p, .feature-card p, .step p, .cta-box p, .footer-section ul li a').forEach(el => {
+        el.style.color = secondaryColor;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['company_name', config.company_name || defaultConfig.company_name],
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['cta_button', config.cta_button || defaultConfig.cta_button],
+          ['feature_1_title', config.feature_1_title || defaultConfig.feature_1_title],
+          ['feature_2_title', config.feature_2_title || defaultConfig.feature_2_title],
+          ['feature_3_title', config.feature_3_title || defaultConfig.feature_3_title]
+        ])
+      });
+    }
+
+    // Predefined database of recognizable items
+    const imageDatabase = [
+      {
+        name: "Wole Soyinka",
+        category: "Literature Nobel Laureate",
+        year: "1986",
+        origin: "Nigeria",
+        description: "Akinwande Oluwole Babatunde Soyinka is a Nigerian playwright, poet, and essayist. He was awarded the 1986 Nobel Prize in Literature, becoming the first sub-Saharan African to be honored in that category. His works explore the tensions between tradition and modernity in African society.",
+        details: {
+          "Profession": "Playwright, Poet, Author",
+          "Notable Works": "Death and the King's Horseman, The Lion and the Jewel",
+          "Awards": "Nobel Prize in Literature (1986)",
+          "Born": "July 13, 1934"
+        }
+      },
+      {
+        name: "Chinua Achebe",
+        category: "Author & Novelist",
+        year: "1930-2013",
+        origin: "Nigeria",
+        description: "Chinua Achebe was a Nigerian novelist, poet, and critic who is regarded as the dominant figure of modern African literature. His first novel 'Things Fall Apart' is the most widely read book in modern African literature and has been translated into over 50 languages.",
+        details: {
+          "Profession": "Novelist, Poet, Professor",
+          "Notable Works": "Things Fall Apart, No Longer at Ease, Arrow of God",
+          "Awards": "Man Booker International Prize (2007)",
+          "Born": "November 16, 1930"
+        }
+      },
+      {
+        name: "Eiffel Tower",
+        category: "Landmark",
+        year: "1889",
+        origin: "Paris, France",
+        description: "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. Named after engineer Gustave Eiffel, it was constructed as the entrance arch for the 1889 World's Fair and has become a global cultural icon of France.",
+        details: {
+          "Height": "330 meters (1,083 ft)",
+          "Architect": "Gustave Eiffel",
+          "Construction": "1887-1889",
+          "Visitors": "~7 million annually"
+        }
+      },
+      {
+        name: "Mona Lisa",
+        category: "Artwork",
+        year: "1503-1519",
+        origin: "Italy",
+        description: "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance, it is housed in the Louvre Museum in Paris and is one of the most valuable paintings in the world.",
+        details: {
+          "Artist": "Leonardo da Vinci",
+          "Medium": "Oil on poplar panel",
+          "Dimensions": "77 cm × 53 cm",
+          "Location": "Louvre Museum, Paris"
+        }
+      },
+      {
+        name: "Statue of Liberty",
+        category: "Monument",
+        year: "1886",
+        origin: "New York, USA",
+        description: "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York Harbor. Designed by French sculptor Frédéric Auguste Bartholdi, it was a gift from France to the United States and has become a universal symbol of freedom and democracy.",
+        details: {
+          "Height": "93 meters (305 ft) with pedestal",
+          "Designer": "Frédéric Auguste Bartholdi",
+          "Dedicated": "October 28, 1886",
+          "Material": "Copper, Steel, Concrete"
+        }
+      },
+      {
+        name: "Great Wall of China",
+        category: "Historical Structure",
+        year: "7th century BC - 1644 AD",
+        origin: "China",
+        description: "The Great Wall of China is a series of fortifications built across the historical northern borders of ancient Chinese states. Built over many dynasties, it stretches over 21,000 kilometers and is one of the most impressive architectural feats in history.",
+        details: {
+          "Length": "21,196 km (13,171 mi)",
+          "Construction Period": "7th century BC - 17th century AD",
+          "Purpose": "Military defense",
+          "UNESCO": "World Heritage Site (1987)"
+        }
+      },
+      {
+        name: "Taj Mahal",
+        category: "Mausoleum",
+        year: "1632-1653",
+        origin: "Agra, India",
+        description: "The Taj Mahal is an ivory-white marble mausoleum commissioned by Mughal emperor Shah Jahan in memory of his wife Mumtaz Mahal. Regarded as one of the finest examples of Mughal architecture, it combines elements from Islamic, Persian, and Indian architectural styles.",
+        details: {
+          "Architect": "Ustad Ahmad Lahori",
+          "Construction": "1632-1653",
+          "Style": "Mughal Architecture",
+          "UNESCO": "World Heritage Site (1983)"
+        }
+      },
+      {
+        name: "Pyramids of Giza",
+        category: "Ancient Wonder",
+        year: "c. 2580-2560 BC",
+        origin: "Egypt",
+        description: "The Great Pyramid of Giza is the oldest and largest of the three pyramids in the Giza pyramid complex. Built as a tomb for Pharaoh Khufu, it is the oldest of the Seven Wonders of the Ancient World and the only one to remain largely intact.",
+        details: {
+          "Height": "138.8 meters (originally 146.5 m)",
+          "Built For": "Pharaoh Khufu",
+          "Construction": "c. 2580-2560 BC",
+          "Blocks": "~2.3 million stone blocks"
+        }
+      }
+    ];
+
+    // File upload functionality
+    const fileInput = document.getElementById('file-input');
+    const uploadPreview = document.getElementById('upload-preview');
+    const resultsContainer = document.getElementById('results-container');
+    const previewText = document.getElementById('preview-text');
+
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          // Show analyzing state
+          uploadPreview.classList.add('active');
+          resultsContainer.classList.remove('active');
+          previewText.innerHTML = 'Analyzing image<span class="analyzing"></span>';
+          
+          // Simulate AI processing and show random result
+          setTimeout(() => {
+            uploadPreview.classList.remove('active');
+            const randomItem = imageDatabase[Math.floor(Math.random() * imageDatabase.length)];
+            displayResult(randomItem, event.target.result);
+          }, 2000);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function displayResult(item, imageData) {
+      // Update result image
+      document.getElementById('result-image').src = imageData;
+      
+      // Update result info
+      document.getElementById('result-category').textContent = item.category;
+      document.getElementById('result-name').textContent = item.name;
+      document.getElementById('result-year').textContent = item.year;
+      document.getElementById('result-origin').textContent = item.origin;
+      document.getElementById('result-description').textContent = item.description;
+      
+      // Update Google search link
+      const searchQuery = encodeURIComponent(item.name);
+      document.getElementById('google-search-btn').href = `https://www.google.com/search?q=${searchQuery}`;
+      
+      // Update details
+      const detailsContainer = document.getElementById('result-details');
+      detailsContainer.innerHTML = '';
+      Object.entries(item.details).forEach(([label, value]) => {
+        const detailItem = document.createElement('div');
+        detailItem.className = 'detail-item';
+        detailItem.innerHTML = `
+          <label>${label}</label>
+          <div class="value">${value}</div>
+        `;
+        detailsContainer.appendChild(detailItem);
+      });
+      
+      // Show results
+      resultsContainer.classList.add('active');
+    }
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+      this.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99c00930b5d95ce6',t:'MTc2MjcxOTg5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
